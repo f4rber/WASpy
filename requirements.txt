@@ -1,0 +1,7 @@
+colorama
+requests
+fake_useragent
+concurrent
+datetime
+urllib3
+bs4
