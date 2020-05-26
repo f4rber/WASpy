@@ -8,7 +8,7 @@ def dork_start():
     dork = input("Enter dork: ")
     pages = 1
     how_much = input("Enter number of pages to scan: ")
-    decision = input("Delete old file? (y/n)\n[OPTION] ==> ")
+    decision = input("CLean old file? (y/n)\n[OPTION] ==> ")
     if decision == "y":
         file = open("dorks.txt", "w", encoding="utf=8")
         file.write("https://cybersec.org\n")
