@@ -3,5 +3,7 @@
 ![Made with Python](https://img.shields.io/badge/Made%20with-Python-3572A5.svg)
 
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
+
+python3 was.py 
 ```
